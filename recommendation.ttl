@@ -1,0 +1,41 @@
+@prefix ns1: <http://example.com/refractory#> .
+@prefix ns2: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:rec-local a ns1:Recommendation ;
+    ns1:alternativeLayer ns1:Spec_MgOSpinel_Working ;
+    ns1:confidenceScore 9.5e-01 ;
+    ns1:forCondition ns1:wc-local ;
+    ns1:hasConstraint ns1:ConstraintLowOxygenExposure,
+        ns1:ConstraintMoistureControl,
+        ns1:ConstraintStrictDryout ;
+    ns1:hasLayer ns1:Spec_Generic_Backup,
+        ns1:Spec_Generic_Insulation,
+        ns1:Spec_MgOC_Working ;
+    ns1:highlightsRisk ns1:RiskCarbonOxidation,
+        ns1:RiskDryoutExplosion,
+        ns1:RiskHydration ;
+    ns1:keyThreshold "Tmax适用范围=1400.0-1900.0℃；允许气氛=还原性；渣碱度范围=1.0-10.0；目标炉龄=1800.0炉次；壳体温度上限=320.0℃" ;
+    ns1:primaryLayer ns1:Spec_MgOC_Working ;
+    ns1:recommendedProcess ns1:ProcessBricking,
+        ns1:ProcessDryoutControlled ;
+    ns1:recommendedSystem ns1:MS_MgOC ;
+    ns2:description "推荐工作层=工作层：镁碳砖/料(示例范围)；替代方案=工作层：镁质-尖晶石砖/料(示例范围)；炉型=电弧炉；部位=渣线；渣型=碱性渣；运行模式=间歇式；依据：Tmax=1650.0℃，气氛=还原性，金属接触=true，渣碱度=2.0；置信度=0.95；阈值=Tmax适用范围=1400.0-1900.0℃；允许气氛=还原性；渣碱度范围=1.0-10.0；目标炉龄=1800.0炉次；壳体温度上限=320.0℃" .
+
+ns1:AbrasionErosion ns1:mitigatedBy ns1:MS_MgOC .
+
+ns1:MetalPenetration ns1:mitigatedBy ns1:MS_MgOC .
+
+ns1:SlagCorrosion ns1:mitigatedBy ns1:MS_MgOC .
+
+ns1:wc-local ns1:triggersFailure ns1:AbrasionErosion,
+        ns1:MetalPenetration,
+        ns1:SlagCorrosion .
+
+ns1:Spec_MgOC_Working ns1:hasRisk ns1:RiskCarbonOxidation,
+        ns1:RiskDryoutExplosion,
+        ns1:RiskHydration ;
+    ns1:requiresProcess ns1:ProcessBricking,
+        ns1:ProcessDryoutControlled ;
+    ns2:isPartOf ns1:MS_MgOC .
+

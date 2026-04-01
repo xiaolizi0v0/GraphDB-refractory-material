@@ -1,0 +1,93 @@
+@prefix ex: <http://example.com/refractory#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+ex:WorkCondition a rdfs:Class ; rdfs:label "工况"@zh .
+ex:FurnaceType a rdfs:Class ; rdfs:label "炉型"@zh .
+ex:Atmosphere a rdfs:Class ; rdfs:label "气氛"@zh .
+ex:FailureMechanism a rdfs:Class ; rdfs:label "失效机理"@zh .
+ex:MaterialSystem a rdfs:Class ; rdfs:label "材质体系"@zh .
+ex:ProductSpec a rdfs:Class ; rdfs:label "牌号/配方范围"@zh .
+ex:InstallationProcess a rdfs:Class ; rdfs:label "施工工艺"@zh .
+ex:Risk a rdfs:Class ; rdfs:label "风险点"@zh .
+ex:Recommendation a rdfs:Class ; rdfs:label "推荐结果"@zh .
+ex:LiningRole a rdfs:Class ; rdfs:label "衬里角色"@zh .
+ex:FurnaceZone a rdfs:Class ; rdfs:label "炉衬部位"@zh .
+ex:SlagType a rdfs:Class ; rdfs:label "渣型"@zh .
+ex:OperationMode a rdfs:Class ; rdfs:label "运行模式"@zh .
+ex:Constraint a rdfs:Class ; rdfs:label "工程约束"@zh .
+
+# ---- WorkCondition inputs ----
+ex:hasFurnaceType a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range ex:FurnaceType ; rdfs:label "炉型"@zh .
+ex:tmax a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:double ; rdfs:label "最高温度(℃)"@zh .
+ex:atmosphere a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range ex:Atmosphere ; rdfs:label "气氛"@zh .
+ex:slagBasicity a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:double ; rdfs:label "渣碱度(CaO/SiO2)"@zh .
+ex:thermalShockCyclesPerDay a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:double ; rdfs:label "热震频率(次/天)"@zh .
+ex:abrasionLevel a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:string ; rdfs:label "冲刷/磨损等级"@zh .
+ex:metalContact a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:boolean ; rdfs:label "是否接触金属液"@zh .
+ex:hasZone a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range ex:FurnaceZone ; rdfs:label "关键部位"@zh .
+ex:slagType a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range ex:SlagType ; rdfs:label "渣型"@zh .
+ex:operationMode a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range ex:OperationMode ; rdfs:label "运行模式"@zh .
+ex:targetCampaignHeats a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:double ; rdfs:label "目标炉龄(炉次)"@zh .
+ex:maxAllowShellTemp a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range xsd:double ; rdfs:label "壳体允许最高温度(℃)"@zh .
+
+# ---- Reasoning chain ----
+ex:triggersFailure a rdf:Property ; rdfs:domain ex:WorkCondition ; rdfs:range ex:FailureMechanism ; rdfs:label "触发失效机理"@zh .
+ex:mitigatedBy a rdf:Property ; rdfs:domain ex:FailureMechanism ; rdfs:range ex:MaterialSystem ; rdfs:label "可由材质体系缓解"@zh .
+ex:implementedAs a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range ex:ProductSpec ; rdfs:label "落地为牌号/配方"@zh .
+ex:requiresProcess a rdf:Property ; rdfs:domain ex:ProductSpec ; rdfs:range ex:InstallationProcess ; rdfs:label "需要施工工艺"@zh .
+ex:hasRisk a rdf:Property ; rdfs:domain ex:ProductSpec ; rdfs:range ex:Risk ; rdfs:label "风险点"@zh .
+ex:requiresConstraint a rdf:Property ; rdfs:domain ex:ProductSpec ; rdfs:range ex:Constraint ; rdfs:label "需要满足约束"@zh .
+ex:forSlagType a rdf:Property ; rdfs:domain ex:FailureMechanism ; rdfs:range ex:SlagType ; rdfs:label "针对渣型"@zh .
+
+# ---- Recommendation output ----
+ex:forCondition a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:WorkCondition ; rdfs:label "对应工况"@zh .
+ex:hasLayer a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:ProductSpec ; rdfs:label "推荐材料层"@zh .
+ex:primaryLayer a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:ProductSpec ; rdfs:label "主推荐工作层"@zh .
+ex:alternativeLayer a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:ProductSpec ; rdfs:label "替代工作层"@zh .
+ex:recommendedSystem a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:MaterialSystem ; rdfs:label "推荐材质体系"@zh .
+ex:recommendedProcess a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:InstallationProcess ; rdfs:label "建议施工工艺"@zh .
+ex:highlightsRisk a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:Risk ; rdfs:label "重点风险提示"@zh .
+ex:keyThreshold a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range xsd:string ; rdfs:label "关键阈值"@zh .
+ex:hasConstraint a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range ex:Constraint ; rdfs:label "推荐约束条件"@zh .
+ex:confidenceScore a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range xsd:double ; rdfs:label "推荐置信度"@zh .
+ex:layerRole a rdf:Property ; rdfs:domain ex:ProductSpec ; rdfs:range ex:LiningRole ; rdfs:label "层位"@zh .
+ex:alternativeRank a rdf:Property ; rdfs:domain ex:ProductSpec ; rdfs:range xsd:integer ; rdfs:label "替代优先级"@zh .
+ex:explains a rdf:Property ; rdfs:domain ex:Recommendation ; rdfs:range rdf:Statement ; rdfs:label "解释依据"@zh .
+
+# ---- Material constraints ----
+ex:hasComponent a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:label "主要组分"@zh .
+ex:minTmax a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range xsd:double ; rdfs:label "适用最低最高温度(℃)"@zh .
+ex:maxTmax a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range xsd:double ; rdfs:label "适用最高最高温度(℃)"@zh .
+ex:allowedAtmosphere a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range ex:Atmosphere ; rdfs:label "允许气氛"@zh .
+ex:handlesMetalContact a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range xsd:boolean ; rdfs:label "可接触金属液"@zh .
+ex:minSlagBasicity a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range xsd:double ; rdfs:label "适用最小渣碱度"@zh .
+ex:maxSlagBasicity a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range xsd:double ; rdfs:label "适用最大渣碱度"@zh .
+ex:preferredForFurnace a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range ex:FurnaceType ; rdfs:label "优选炉型"@zh .
+ex:preferredForZone a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range ex:FurnaceZone ; rdfs:label "优选部位"@zh .
+ex:notRecommendedInAtmosphere a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range ex:Atmosphere ; rdfs:label "不建议气氛"@zh .
+ex:notRecommendedForSlagType a rdf:Property ; rdfs:domain ex:MaterialSystem ; rdfs:range ex:SlagType ; rdfs:label "不建议渣型"@zh .
+
+# ---- Enumerations ----
+ex:Oxidizing a ex:Atmosphere ; rdfs:label "氧化性"@zh .
+ex:Reducing a ex:Atmosphere ; rdfs:label "还原性"@zh .
+ex:CORich a ex:Atmosphere ; rdfs:label "CO 富"@zh .
+
+ex:WorkingLining a ex:LiningRole ; rdfs:label "工作层"@zh .
+ex:InsulatingLining a ex:LiningRole ; rdfs:label "隔热层"@zh .
+ex:BackupLining a ex:LiningRole ; rdfs:label "背衬"@zh .
+
+ex:SlagLine a ex:FurnaceZone ; rdfs:label "渣线"@zh .
+ex:ImpactZone a ex:FurnaceZone ; rdfs:label "冲击区"@zh .
+ex:HotFace a ex:FurnaceZone ; rdfs:label "热面"@zh .
+ex:Roof a ex:FurnaceZone ; rdfs:label "炉顶"@zh .
+ex:TapHole a ex:FurnaceZone ; rdfs:label "出钢口/出铁口"@zh .
+
+ex:BasicSlag a ex:SlagType ; rdfs:label "碱性渣"@zh .
+ex:AcidicSlag a ex:SlagType ; rdfs:label "酸性渣"@zh .
+ex:NeutralSlag a ex:SlagType ; rdfs:label "中性渣"@zh .
+
+ex:BatchMode a ex:OperationMode ; rdfs:label "间歇式"@zh .
+ex:ContinuousMode a ex:OperationMode ; rdfs:label "连续式"@zh .

@@ -1,0 +1,268 @@
+PREFIX ex: <http://example.com/refractory#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# Input: a WorkCondition instance (ex:wc-...) with ex:tmax, ex:atmosphere, ex:slagBasicity, ex:thermalShockCyclesPerDay, ex:abrasionLevel, ex:metalContact
+# Output: a Recommendation node + selected layer ProductSpec(s) + explanation statements
+
+CONSTRUCT {
+  ?rec a ex:Recommendation ;
+       ex:forCondition ?wc ;
+    ex:primaryLayer ?workingSpec ;
+       ex:hasLayer ?workingSpec ;
+       ex:hasLayer ex:Spec_Generic_Insulation ;
+       ex:hasLayer ex:Spec_Generic_Backup ;
+    ex:recommendedSystem ?ms ;
+    ex:keyThreshold ?thresholdText ;
+   ex:confidenceScore ?confidence ;
+       schema:description ?recText .
+
+  ?rec ex:alternativeLayer ?altWorkingSpec .
+  ?rec ex:recommendedProcess ?proc .
+  ?rec ex:highlightsRisk ?risk .
+  ?rec ex:hasConstraint ?constraint .
+
+  # explain: which failure mechanisms were inferred
+  ?wc ex:triggersFailure ?fm1 .
+  ?wc ex:triggersFailure ?fm2 .
+  ?wc ex:triggersFailure ?fm3 .
+  ?wc ex:triggersFailure ?fm4 .
+  ?wc ex:triggersFailure ?fm5 .
+  ?wc ex:triggersFailure ?fm6 .
+
+  # explain: why workingSpec chosen
+  ?workingSpec schema:isPartOf ?ms .
+  ?workingSpec ex:requiresProcess ?proc .
+  ?workingSpec ex:hasRisk ?risk .
+  ?fm1 ex:mitigatedBy ?ms .
+  ?fm2 ex:mitigatedBy ?ms .
+  ?fm3 ex:mitigatedBy ?ms .
+  ?fm4 ex:mitigatedBy ?ms .
+  ?fm5 ex:mitigatedBy ?ms .
+  ?fm6 ex:mitigatedBy ?ms .
+
+} WHERE {
+  # Use stable IRI for local runs; GraphDB-side pipelines can mint UUIDs later.
+  BIND(ex:rec-local AS ?rec)
+
+  # choose exactly one workcondition (caller should ensure only one is present in dataset)
+  ?wc a ex:WorkCondition ;
+      ex:tmax ?tmax ;
+      ex:atmosphere ?atm ;
+      ex:metalContact ?metalContact .
+  OPTIONAL { ?wc ex:slagBasicity ?basicity . }
+  OPTIONAL { ?wc ex:thermalShockCyclesPerDay ?ts . }
+  OPTIONAL { ?wc ex:abrasionLevel ?abrasion . }
+  OPTIONAL { ?wc ex:hasFurnaceType ?furnaceType . }
+  OPTIONAL { ?wc ex:hasZone ?zone . }
+  OPTIONAL { ?wc ex:slagType ?slagType . }
+  OPTIONAL { ?wc ex:operationMode ?operationMode . }
+  OPTIONAL { ?wc ex:targetCampaignHeats ?campaign . }
+  OPTIONAL { ?wc ex:maxAllowShellTemp ?shellTemp . }
+
+  # ---- Step 1: infer failure mechanisms (MVP heuristics) ----
+  # Important: do NOT let mechanism inference block recommendations.
+  # Avoid UNION (rdflib compatibility); each mechanism is bound independently.
+
+  OPTIONAL {
+    FILTER(LCASE(STR(?metalContact)) = "true")
+    BIND(ex:MetalPenetration AS ?fm1)
+  }
+  OPTIONAL {
+    FILTER(LCASE(STR(?metalContact)) = "true")
+    BIND(ex:SlagCorrosion AS ?fm2)
+  }
+  OPTIONAL {
+    FILTER(BOUND(?basicity) && ?basicity >= "1.2"^^xsd:double)
+    BIND(ex:SlagCorrosion AS ?fm3)
+  }
+  OPTIONAL {
+    FILTER(BOUND(?basicity) && ?basicity >= "0.8"^^xsd:double && ?basicity <= "1.6"^^xsd:double)
+    BIND(ex:AlkaliAttack AS ?fm4)
+  }
+  OPTIONAL {
+    FILTER(BOUND(?ts) && ?ts >= "3.0"^^xsd:double)
+    BIND(ex:ThermalShockSpalling AS ?fm5)
+  }
+  OPTIONAL {
+    FILTER(BOUND(?abrasion) && LCASE(STR(?abrasion)) = "high")
+    BIND(ex:AbrasionErosion AS ?fm6)
+  }
+
+  # ---- Step 2: select candidate material system (avoid UNION quirks in rdflib) ----
+  BIND(LCASE(STR(?metalContact)) AS ?mc)
+
+  # rdflib SPARQL parser does not accept UNDEF inside expressions; use a sentinel IRI instead.
+  BIND(ex:NoChoice AS ?no)
+  BIND(ex:NoZone AS ?noZone)
+  BIND(ex:NoSlag AS ?noSlag)
+  BIND(COALESCE(?zone, ?noZone) AS ?zoneV)
+  BIND(COALESCE(?slagType, ?noSlag) AS ?slagV)
+
+  BIND(
+    IF(
+      ?mc = "true" && ?atm != ex:Oxidizing && ?tmax >= "1400"^^xsd:double && (?zoneV = ex:SlagLine || ?zoneV = ex:ImpactZone || ?zoneV = ?noZone),
+      ex:MS_MgOC,
+      IF(
+        ?mc = "true" && ?atm = ex:Oxidizing,
+        ex:MS_MgOSpinel,
+        IF(
+          ?mc = "false" && ?slagV = ex:AcidicSlag,
+          ex:MS_HighAlumina,
+          IF(
+            ?mc = "false",
+            ex:MS_Al2O3Spinel,
+            ?no
+          )
+        )
+      )
+    )
+    AS ?ms
+  )
+
+  BIND(
+    IF(
+      ?ms = ex:MS_MgOC,
+      ex:Spec_MgOC_Working,
+      IF(
+        ?ms = ex:MS_MgOSpinel,
+        ex:Spec_MgOSpinel_Working,
+        IF(
+          ?ms = ex:MS_Al2O3Spinel,
+          ex:Spec_Al2O3Spinel_Working,
+          IF(?ms = ex:MS_HighAlumina, ex:Spec_HighAlumina_Working, ?no)
+        )
+      )
+    )
+    AS ?workingSpec
+  )
+
+  FILTER(?ms != ?no && ?workingSpec != ?no)
+
+  BIND(
+    IF(
+      ?workingSpec = ex:Spec_MgOC_Working,
+      ex:Spec_MgOSpinel_Working,
+      IF(
+        ?workingSpec = ex:Spec_MgOSpinel_Working,
+        ex:Spec_Al2O3Spinel_Working,
+        IF(
+          ?workingSpec = ex:Spec_Al2O3Spinel_Working,
+          ex:Spec_MgOSpinel_Working,
+          IF(?workingSpec = ex:Spec_HighAlumina_Working, ex:Spec_Al2O3Spinel_Working, ex:Spec_Al2O3Spinel_Working)
+        )
+      )
+    ) AS ?altWorkingSpec
+  )
+
+  ?workingSpec ex:requiresProcess ?proc .
+  ?workingSpec ex:hasRisk ?risk .
+  OPTIONAL { ?workingSpec ex:requiresConstraint ?constraint . }
+
+  # ---- Step 3: ensure system constraints match (temperature/atmosphere/basicity) ----
+  ?ms ex:minTmax ?minT .
+  FILTER(?tmax >= ?minT)
+  OPTIONAL { ?ms ex:maxTmax ?maxT . }
+  FILTER(!BOUND(?maxT) || ?tmax <= ?maxT)
+
+  ?ms ex:allowedAtmosphere ?allowedAtm .
+  FILTER(?allowedAtm = ?atm)
+
+  OPTIONAL {
+    ?allowedAtm rdfs:label ?allowedAtmLabelRaw .
+    FILTER(LANG(?allowedAtmLabelRaw) = "zh" || LANG(?allowedAtmLabelRaw) = "")
+  }
+  BIND(COALESCE(?allowedAtmLabelRaw, STR(?allowedAtm)) AS ?allowedAtmLabel)
+
+  OPTIONAL { ?ms ex:minSlagBasicity ?minB . }
+  OPTIONAL { ?ms ex:maxSlagBasicity ?maxB . }
+  FILTER(!BOUND(?basicity) || (!BOUND(?minB) || ?basicity >= ?minB) )
+  FILTER(!BOUND(?basicity) || (!BOUND(?maxB) || ?basicity <= ?maxB) )
+
+  FILTER(NOT EXISTS { ?ms ex:notRecommendedInAtmosphere ?atm })
+  FILTER(?slagV = ?noSlag || NOT EXISTS { ?ms ex:notRecommendedForSlagType ?slagV })
+
+  BIND(IF(BOUND(?furnaceType) && EXISTS { ?ms ex:preferredForFurnace ?furnaceType }, "0.20"^^xsd:double, "0.0"^^xsd:double) AS ?scoreFurnace)
+  BIND(IF(?zoneV != ?noZone && EXISTS { ?ms ex:preferredForZone ?zoneV }, "0.15"^^xsd:double, "0.0"^^xsd:double) AS ?scoreZone)
+  BIND("0.65"^^xsd:double + ?scoreFurnace + ?scoreZone AS ?rawScore)
+  BIND(IF(?rawScore > "0.95"^^xsd:double, "0.95"^^xsd:double, ?rawScore) AS ?confidence)
+
+  BIND(
+    CONCAT(
+      "Tmax适用范围=", STR(?minT), "-", IF(BOUND(?maxT), STR(?maxT), "NA"), "℃",
+      "；允许气氛=", STR(?allowedAtmLabel),
+      IF(
+        BOUND(?minB) || BOUND(?maxB),
+        CONCAT(
+          "；渣碱度范围=",
+          IF(BOUND(?minB), STR(?minB), "-inf"),
+          "-",
+          IF(BOUND(?maxB), STR(?maxB), "+inf")
+        ),
+        ""
+      ),
+      IF(BOUND(?campaign), CONCAT("；目标炉龄=", STR(?campaign), "炉次"), ""),
+      IF(BOUND(?shellTemp), CONCAT("；壳体温度上限=", STR(?shellTemp), "℃"), "")
+    ) AS ?thresholdText
+  )
+
+  OPTIONAL {
+    ?workingSpec rdfs:label ?workingLabelRaw .
+    FILTER(LANG(?workingLabelRaw) = "zh" || LANG(?workingLabelRaw) = "")
+  }
+  BIND(COALESCE(?workingLabelRaw, STR(?workingSpec)) AS ?workingLabel)
+
+  OPTIONAL {
+    ?altWorkingSpec rdfs:label ?altLabelRaw .
+    FILTER(LANG(?altLabelRaw) = "zh" || LANG(?altLabelRaw) = "")
+  }
+  BIND(COALESCE(?altLabelRaw, STR(?altWorkingSpec)) AS ?altLabel)
+
+  OPTIONAL {
+    ?atm rdfs:label ?atmLabelRaw .
+    FILTER(LANG(?atmLabelRaw) = "zh" || LANG(?atmLabelRaw) = "")
+  }
+  BIND(COALESCE(?atmLabelRaw, STR(?atm)) AS ?atmLabel)
+
+  OPTIONAL {
+    ?furnaceType rdfs:label ?ftLabelRaw .
+    FILTER(LANG(?ftLabelRaw) = "zh" || LANG(?ftLabelRaw) = "")
+  }
+  BIND(IF(BOUND(?furnaceType), COALESCE(?ftLabelRaw, STR(?furnaceType)), "") AS ?ftLabel)
+
+  OPTIONAL {
+    ?zoneV rdfs:label ?zoneLabelRaw .
+    FILTER(LANG(?zoneLabelRaw) = "zh" || LANG(?zoneLabelRaw) = "")
+  }
+  BIND(IF(?zoneV != ?noZone, COALESCE(?zoneLabelRaw, STR(?zoneV)), "") AS ?zoneLabel)
+
+  OPTIONAL {
+    ?slagV rdfs:label ?slagLabelRaw .
+    FILTER(LANG(?slagLabelRaw) = "zh" || LANG(?slagLabelRaw) = "")
+  }
+  BIND(IF(?slagV != ?noSlag, COALESCE(?slagLabelRaw, STR(?slagV)), "") AS ?slagLabel)
+
+  OPTIONAL {
+    ?operationMode rdfs:label ?opLabelRaw .
+    FILTER(LANG(?opLabelRaw) = "zh" || LANG(?opLabelRaw) = "")
+  }
+  BIND(IF(BOUND(?operationMode), COALESCE(?opLabelRaw, STR(?operationMode)), "") AS ?opLabel)
+
+  # ---- Step 4: build explanation text (human readable) ----
+  BIND(
+    CONCAT(
+      "推荐工作层=", STR(?workingLabel),
+      IF(BOUND(?altWorkingSpec), CONCAT("；替代方案=", STR(?altLabel)), ""),
+      IF(BOUND(?furnaceType), CONCAT("；炉型=", STR(?ftLabel)), ""),
+      IF(?zoneV != ?noZone, CONCAT("；部位=", STR(?zoneLabel)), ""),
+      IF(?slagV != ?noSlag, CONCAT("；渣型=", STR(?slagLabel)), ""),
+      IF(BOUND(?operationMode), CONCAT("；运行模式=", STR(?opLabel)), ""),
+      "；依据：Tmax=", STR(?tmax), "℃，气氛=", STR(?atmLabel), "，金属接触=", STR(?metalContact),
+      IF(BOUND(?basicity), CONCAT("，渣碱度=", STR(?basicity)), ""),
+      "；置信度=", STR(?confidence),
+      "；阈值=", ?thresholdText
+    ) AS ?recText
+  )
+}

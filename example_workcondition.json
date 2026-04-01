@@ -1,0 +1,14 @@
+{
+  "furnaceType": "EAF",
+  "zone": "SlagLine",
+  "tmax": 1650,
+  "atmosphere": "Reducing",
+  "slagType": "BasicSlag",
+  "slagBasicity": 2.0,
+  "operationMode": "BatchMode",
+  "targetCampaignHeats": 1800,
+  "maxAllowShellTemp": 320,
+  "thermalShockCyclesPerDay": 2,
+  "abrasionLevel": "High",
+  "metalContact": true
+}

@@ -1,0 +1,166 @@
+@prefix ex: <http://example.com/refractory#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+
+# ---- Furnace / zone / slag / operation reference data ----
+ex:EAF a ex:FurnaceType ; rdfs:label "电弧炉"@zh .
+ex:LF a ex:FurnaceType ; rdfs:label "钢包精炼炉"@zh .
+ex:BOF a ex:FurnaceType ; rdfs:label "转炉"@zh .
+ex:BlastFurnace a ex:FurnaceType ; rdfs:label "高炉"@zh .
+ex:GlassKiln a ex:FurnaceType ; rdfs:label "玻璃窑"@zh .
+ex:CementKiln a ex:FurnaceType ; rdfs:label "回转窑"@zh .
+ex:ReheatingFurnace a ex:FurnaceType ; rdfs:label "加热炉"@zh .
+
+ex:SlagCorrosion ex:forSlagType ex:BasicSlag, ex:AcidicSlag, ex:NeutralSlag .
+ex:AlkaliAttack ex:forSlagType ex:BasicSlag .
+
+# ---- Failure mechanisms (MVP set) ----
+ex:SlagCorrosion a ex:FailureMechanism ; rdfs:label "渣蚀/化学侵蚀"@zh .
+ex:AlkaliAttack a ex:FailureMechanism ; rdfs:label "碱侵蚀/碱挥发结圈"@zh .
+ex:ThermalShockSpalling a ex:FailureMechanism ; rdfs:label "热震剥落"@zh .
+ex:AbrasionErosion a ex:FailureMechanism ; rdfs:label "冲刷/磨损"@zh .
+ex:OxidationBurnout a ex:FailureMechanism ; rdfs:label "氧化烧损(含碳材料)"@zh .
+ex:MetalPenetration a ex:FailureMechanism ; rdfs:label "金属/渣渗透"@zh .
+ex:HydrationCracking a ex:FailureMechanism ; rdfs:label "水化开裂"@zh .
+
+# ---- Risks ----
+ex:RiskCarbonOxidation a ex:Risk ; rdfs:label "含碳相氧化风险(需抗氧化/密封/控氧)"@zh .
+ex:RiskHydration a ex:Risk ; rdfs:label "水化风险(镁质材料存储/烘烤/防潮)"@zh .
+ex:RiskDryoutExplosion a ex:Risk ; rdfs:label "烘炉不当导致爆裂/脱落风险"@zh .
+ex:RiskThermalSpalling a ex:Risk ; rdfs:label "热震剥落风险(升温/停炉策略)"@zh .
+ex:RiskChemicalIncompatibility a ex:Risk ; rdfs:label "渣系不匹配导致快速侵蚀风险"@zh .
+ex:RiskShellOverheat a ex:Risk ; rdfs:label "壳体过热风险(需关注背衬与隔热层)"@zh .
+
+# ---- Engineering constraints ----
+ex:ConstraintLowOxygenExposure a ex:Constraint ; rdfs:label "施工后运行阶段需低氧暴露"@zh .
+ex:ConstraintMoistureControl a ex:Constraint ; rdfs:label "仓储与施工阶段需严格防潮"@zh .
+ex:ConstraintStrictDryout a ex:Constraint ; rdfs:label "必须执行分段受控烘炉曲线"@zh .
+ex:ConstraintFastTurnaround a ex:Constraint ; rdfs:label "检修窗口短，要求快速恢复生产"@zh .
+
+# ---- Installation processes ----
+ex:ProcessBricking a ex:InstallationProcess ; rdfs:label "砌筑(砖)"@zh .
+ex:ProcessCastable a ex:InstallationProcess ; rdfs:label "浇注料施工"@zh .
+ex:ProcessGunning a ex:InstallationProcess ; rdfs:label "喷补/喷涂"@zh .
+ex:ProcessDryoutControlled a ex:InstallationProcess ; rdfs:label "受控烘炉曲线(分段升温/保温)"@zh .
+
+# ---- Material systems (linked to Wikidata components from out.ttl) ----
+# MgO-C system: strong against basic slag & metal contact, weak in oxidizing atmosphere.
+ex:MS_MgOC a ex:MaterialSystem ;
+  rdfs:label "镁碳(MgO-C)"@zh ;
+  ex:hasComponent wd:Q214769 ;  # 氧化镁
+  ex:hasComponent wd:Q1123417 ; # 耐火材料(概念兜底)
+  ex:minTmax "1400.0"^^xsd:double ; ex:maxTmax "1900.0"^^xsd:double ;
+  ex:allowedAtmosphere ex:Reducing, ex:CORich ;
+  ex:handlesMetalContact true ;
+  ex:minSlagBasicity "1.0"^^xsd:double ; ex:maxSlagBasicity "10.0"^^xsd:double ;
+  ex:preferredForFurnace ex:EAF, ex:BOF ;
+  ex:preferredForZone ex:SlagLine, ex:ImpactZone, ex:TapHole ;
+  ex:notRecommendedInAtmosphere ex:Oxidizing ;
+  ex:notRecommendedForSlagType ex:AcidicSlag .
+
+# Al2O3-Spinel: good thermal shock + oxidation atmosphere.
+ex:MS_Al2O3Spinel a ex:MaterialSystem ;
+  rdfs:label "刚玉-尖晶石(Al2O3-Spinel)"@zh ;
+  ex:hasComponent wd:Q177342 ;  # 氧化铝
+  ex:hasComponent wd:Q131777 ;  # 刚玉
+  ex:hasComponent wd:Q191310 ;  # 尖晶石
+  ex:minTmax "1200.0"^^xsd:double ; ex:maxTmax "1800.0"^^xsd:double ;
+  ex:allowedAtmosphere ex:Oxidizing, ex:Reducing, ex:CORich ;
+  ex:handlesMetalContact false ;
+  ex:minSlagBasicity "0.6"^^xsd:double ; ex:maxSlagBasicity "2.0"^^xsd:double ;
+  ex:preferredForFurnace ex:LF, ex:CementKiln ;
+  ex:preferredForZone ex:HotFace, ex:Roof .
+
+# MgO-Spinel: basic refractory without carbon, better oxidation resistance.
+ex:MS_MgOSpinel a ex:MaterialSystem ;
+  rdfs:label "镁质-尖晶石(MgO-Spinel)"@zh ;
+  ex:hasComponent wd:Q214769 ;
+  ex:hasComponent wd:Q191310 ;
+  ex:minTmax "1200.0"^^xsd:double ; ex:maxTmax "1850.0"^^xsd:double ;
+  ex:allowedAtmosphere ex:Oxidizing, ex:Reducing, ex:CORich ;
+  ex:handlesMetalContact true ;
+  ex:minSlagBasicity "1.0"^^xsd:double ; ex:maxSlagBasicity "10.0"^^xsd:double ;
+  ex:preferredForFurnace ex:EAF, ex:BOF, ex:LF ;
+  ex:preferredForZone ex:SlagLine, ex:HotFace .
+
+# High-alumina system: useful fallback in oxidizing and medium/low-basicity service.
+ex:MS_HighAlumina a ex:MaterialSystem ;
+  rdfs:label "高铝体系(High-Alumina)"@zh ;
+  ex:hasComponent wd:Q177342 ;
+  ex:minTmax "1000.0"^^xsd:double ; ex:maxTmax "1700.0"^^xsd:double ;
+  ex:allowedAtmosphere ex:Oxidizing, ex:Reducing ;
+  ex:handlesMetalContact false ;
+  ex:minSlagBasicity "0.3"^^xsd:double ; ex:maxSlagBasicity "1.4"^^xsd:double ;
+  ex:preferredForFurnace ex:ReheatingFurnace, ex:CementKiln ;
+  ex:preferredForZone ex:HotFace, ex:Roof ;
+  ex:notRecommendedForSlagType ex:BasicSlag .
+
+# ---- Map mechanisms to systems (coarse) ----
+ex:SlagCorrosion ex:mitigatedBy ex:MS_MgOC, ex:MS_MgOSpinel, ex:MS_Al2O3Spinel .
+ex:AlkaliAttack ex:mitigatedBy ex:MS_MgOSpinel, ex:MS_Al2O3Spinel .
+ex:ThermalShockSpalling ex:mitigatedBy ex:MS_Al2O3Spinel .
+ex:AbrasionErosion ex:mitigatedBy ex:MS_MgOC, ex:MS_MgOSpinel .
+ex:OxidationBurnout ex:mitigatedBy ex:MS_MgOSpinel, ex:MS_Al2O3Spinel .
+ex:MetalPenetration ex:mitigatedBy ex:MS_MgOC, ex:MS_MgOSpinel .
+ex:HydrationCracking ex:mitigatedBy ex:MS_MgOSpinel, ex:MS_HighAlumina .
+
+# ---- Product specs (recipe ranges) ----
+# 注意：这些是 MVP 级“范围模板”，你后续可替换为厂商牌号/企业配方。
+ex:Spec_MgOC_Working a ex:ProductSpec ;
+  rdfs:label "工作层：镁碳砖/料(示例范围)"@zh ;
+  ex:layerRole ex:WorkingLining ;
+  ex:requiresProcess ex:ProcessBricking, ex:ProcessDryoutControlled ;
+  ex:hasRisk ex:RiskCarbonOxidation, ex:RiskHydration, ex:RiskDryoutExplosion ;
+  ex:requiresConstraint ex:ConstraintLowOxygenExposure, ex:ConstraintMoistureControl, ex:ConstraintStrictDryout ;
+  ex:alternativeRank "1"^^xsd:integer ;
+  schema:description "MgO: 92–96%；C: 10–18%；抗氧化剂: 1–3%(示例)"@zh ;
+  schema:isPartOf ex:MS_MgOC .
+
+ex:Spec_MgOSpinel_Working a ex:ProductSpec ;
+  rdfs:label "工作层：镁质-尖晶石砖/料(示例范围)"@zh ;
+  ex:layerRole ex:WorkingLining ;
+  ex:requiresProcess ex:ProcessBricking, ex:ProcessDryoutControlled ;
+  ex:hasRisk ex:RiskHydration, ex:RiskDryoutExplosion ;
+  ex:requiresConstraint ex:ConstraintMoistureControl, ex:ConstraintStrictDryout ;
+  ex:alternativeRank "2"^^xsd:integer ;
+  schema:description "MgO: 85–95%；尖晶石: 5–15%(示例)"@zh ;
+  schema:isPartOf ex:MS_MgOSpinel .
+
+ex:Spec_Al2O3Spinel_Working a ex:ProductSpec ;
+  rdfs:label "工作层：刚玉-尖晶石浇注料/砖(示例范围)"@zh ;
+  ex:layerRole ex:WorkingLining ;
+  ex:requiresProcess ex:ProcessCastable, ex:ProcessDryoutControlled ;
+  ex:hasRisk ex:RiskDryoutExplosion, ex:RiskThermalSpalling ;
+  ex:requiresConstraint ex:ConstraintStrictDryout, ex:ConstraintFastTurnaround ;
+  ex:alternativeRank "3"^^xsd:integer ;
+  schema:description "Al2O3: ≥85%；尖晶石: 5–20%；微粉+结合剂体系按工况选(示例)"@zh ;
+  schema:isPartOf ex:MS_Al2O3Spinel .
+
+ex:Spec_HighAlumina_Working a ex:ProductSpec ;
+  rdfs:label "工作层：高铝砖/高铝浇注料(示例范围)"@zh ;
+  ex:layerRole ex:WorkingLining ;
+  ex:requiresProcess ex:ProcessCastable, ex:ProcessDryoutControlled ;
+  ex:hasRisk ex:RiskThermalSpalling, ex:RiskChemicalIncompatibility ;
+  ex:requiresConstraint ex:ConstraintStrictDryout ;
+  ex:alternativeRank "4"^^xsd:integer ;
+  schema:description "Al2O3: 60–90%；适用于中低碱度、氧化气氛工况(示例)"@zh ;
+  schema:isPartOf ex:MS_HighAlumina .
+
+# Insulation & backup (placeholders for layer completeness)
+ex:Spec_Generic_Insulation a ex:ProductSpec ;
+  rdfs:label "隔热层：轻质隔热耐火材料(占位)"@zh ;
+  ex:layerRole ex:InsulatingLining ;
+  ex:requiresProcess ex:ProcessCastable ;
+  ex:hasRisk ex:RiskDryoutExplosion, ex:RiskShellOverheat ;
+  ex:requiresConstraint ex:ConstraintStrictDryout ;
+  schema:description "轻质浇注料/轻质砖：以导热系数与体积密度为关键指标(占位)"@zh .
+
+ex:Spec_Generic_Backup a ex:ProductSpec ;
+  rdfs:label "背衬：致密耐火材料/浇注料(占位)"@zh ;
+  ex:layerRole ex:BackupLining ;
+  ex:requiresProcess ex:ProcessCastable ;
+  ex:hasRisk ex:RiskDryoutExplosion ;
+  ex:requiresConstraint ex:ConstraintStrictDryout ;
+  schema:description "背衬以结构强度与施工可达性为关键指标(占位)"@zh .
