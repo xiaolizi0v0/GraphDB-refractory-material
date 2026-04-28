@@ -1,0 +1,629 @@
+@prefix ex: <http://example.com/refractory#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:AluminaBasedMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "铝质体系"@zh ;
+    rdfs:comment "以氧化铝为主的耐火材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:Atmosphere a rdfs:Class ;
+    rdfs:label "气氛"@zh .
+
+ex:BackupProductSpec a rdfs:Class,
+        owl:Class ;
+    rdfs:label "背衬产品规格"@zh ;
+    rdfs:comment "适用于背衬层的产品规格族。"@zh ;
+    rdfs:subClassOf ex:ProductSpec .
+
+ex:BasicSlagServiceMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "碱性渣适用体系"@zh ;
+    rdfs:comment "适用于碱性渣工况的材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:BrickLayingProcess a rdfs:Class,
+        owl:Class ;
+    rdfs:label "砌筑工艺"@zh ;
+    rdfs:comment "适用于砖材施工的工艺族。"@zh ;
+    rdfs:subClassOf ex:InstallationProcess .
+
+ex:BrickProductSpec a rdfs:Class,
+        owl:Class ;
+    rdfs:label "砖类产品规格"@zh ;
+    rdfs:comment "以砖材为主的产品规格族。"@zh ;
+    rdfs:subClassOf ex:ProductSpec .
+
+ex:CarbonContainingMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "含碳材质体系"@zh ;
+    rdfs:comment "含碳耐火材料体系的细分本体。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:CarbonOxidationRisk a rdfs:Class,
+        owl:Class ;
+    rdfs:label "含碳相氧化风险"@zh ;
+    rdfs:comment "含碳材料在氧化气氛下的风险。"@zh ;
+    rdfs:subClassOf ex:Risk .
+
+ex:CastableProductSpec a rdfs:Class,
+        owl:Class ;
+    rdfs:label "浇注料产品规格"@zh ;
+    rdfs:comment "以浇注料为主的产品规格族。"@zh ;
+    rdfs:subClassOf ex:ProductSpec .
+
+ex:ChemicalCorrosionResistantMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "抗化学侵蚀体系"@zh ;
+    rdfs:comment "对渣蚀和化学侵蚀更耐受的材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:ChemicalDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "化学损伤机理"@zh ;
+    rdfs:comment "以化学反应、渣蚀和侵蚀为主的失效机理族。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:ChemicalIncompatibilityRisk a rdfs:Class,
+        owl:Class ;
+    rdfs:label "化学不相容风险"@zh ;
+    rdfs:comment "渣系或气氛不匹配引发的风险。"@zh ;
+    rdfs:subClassOf ex:Risk .
+
+ex:Constraint a rdfs:Class ;
+    rdfs:label "工程约束"@zh .
+
+ex:ControlledDryOutProcess a rdfs:Class,
+        owl:Class ;
+    rdfs:label "受控烘炉工艺"@zh ;
+    rdfs:comment "强调分段升温和保温的烘炉工艺。"@zh ;
+    rdfs:subClassOf ex:InstallationProcess .
+
+ex:DryOutExplosionRisk a rdfs:Class,
+        owl:Class ;
+    rdfs:label "烘炉爆裂风险"@zh ;
+    rdfs:comment "干燥和烘炉不当导致的爆裂风险。"@zh ;
+    rdfs:subClassOf ex:Risk .
+
+ex:EnvironmentalDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "环境损伤机理"@zh ;
+    rdfs:comment "与氧化、水化和介质环境相关的失效机理族。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:FailureMechanism a rdfs:Class ;
+    rdfs:label "失效机理"@zh .
+
+ex:FastTurnaroundConstraint a rdfs:Class,
+        owl:Class ;
+    rdfs:label "快速检修约束"@zh ;
+    rdfs:comment "检修窗口短，需要快速恢复生产。"@zh ;
+    rdfs:subClassOf ex:Constraint .
+
+ex:FurnaceType a rdfs:Class ;
+    rdfs:label "炉型"@zh .
+
+ex:FurnaceZone a rdfs:Class ;
+    rdfs:label "炉衬部位"@zh .
+
+ex:GunningProductSpec a rdfs:Class,
+        owl:Class ;
+    rdfs:label "喷补产品规格"@zh ;
+    rdfs:comment "以喷补/喷涂为主的产品规格族。"@zh ;
+    rdfs:subClassOf ex:ProductSpec .
+
+ex:HighAluminaMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "高铝体系"@zh ;
+    rdfs:comment "高氧化铝含量的耐火材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:HydrationDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "水化损伤机理"@zh ;
+    rdfs:comment "与材料受潮和水化膨胀相关的失效机理。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:HydrationRisk a rdfs:Class,
+        owl:Class ;
+    rdfs:label "水化风险"@zh ;
+    rdfs:comment "受潮后发生水化和结构破坏的风险。"@zh ;
+    rdfs:subClassOf ex:Risk .
+
+ex:HydrationTolerantMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "抗水化体系"@zh ;
+    rdfs:comment "对储存、施工和烘炉阶段受潮更宽容的体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:InstallationProcess a rdfs:Class ;
+    rdfs:label "施工工艺"@zh .
+
+ex:InsulatingProductSpec a rdfs:Class,
+        owl:Class ;
+    rdfs:label "隔热层产品规格"@zh ;
+    rdfs:comment "适用于隔热层的产品规格族。"@zh ;
+    rdfs:subClassOf ex:ProductSpec .
+
+ex:LiningRole a rdfs:Class ;
+    rdfs:label "衬里角色"@zh .
+
+ex:LowOxygenExposureConstraint a rdfs:Class,
+        owl:Class ;
+    rdfs:label "低氧暴露约束"@zh ;
+    rdfs:comment "施工后运行阶段需要控制氧暴露。"@zh ;
+    rdfs:subClassOf ex:Constraint .
+
+ex:MagnesiaBasedMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "镁质体系"@zh ;
+    rdfs:comment "以镁质为主的耐火材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:MaterialSystem a rdfs:Class ;
+    rdfs:label "材质体系"@zh .
+
+ex:MechanicalDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "机械损伤机理"@zh ;
+    rdfs:comment "与磨损、冲刷和颗粒冲击相关的失效机理族。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:MetalContactTolerantMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "耐金属液接触体系"@zh ;
+    rdfs:comment "可承受金属液或熔融介质接触的体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:MoistureControlConstraint a rdfs:Class,
+        owl:Class ;
+    rdfs:label "防潮约束"@zh ;
+    rdfs:comment "仓储、施工和周转阶段需要严格防潮。"@zh ;
+    rdfs:subClassOf ex:Constraint .
+
+ex:MonolithicCastingProcess a rdfs:Class,
+        owl:Class ;
+    rdfs:label "整体浇注工艺"@zh ;
+    rdfs:comment "适用于浇注料类施工的工艺族。"@zh ;
+    rdfs:subClassOf ex:InstallationProcess .
+
+ex:OperationMode a rdfs:Class ;
+    rdfs:label "运行模式"@zh .
+
+ex:OxidationDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "氧化损伤机理"@zh ;
+    rdfs:comment "与含碳相氧化烧损相关的失效机理。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:OxidationResistantMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "抗氧化体系"@zh ;
+    rdfs:comment "在氧化气氛下仍保持稳定的材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:PenetrationDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "渗透损伤机理"@zh ;
+    rdfs:comment "与金属液或低粘度介质渗入相关的失效机理。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:ProductSpec a rdfs:Class ;
+    rdfs:label "牌号/配方范围"@zh .
+
+ex:Recommendation a rdfs:Class ;
+    rdfs:label "推荐结果"@zh .
+
+ex:Risk a rdfs:Class ;
+    rdfs:label "风险点"@zh .
+
+ex:ShellOverheatRisk a rdfs:Class,
+        owl:Class ;
+    rdfs:label "壳体过热风险"@zh ;
+    rdfs:comment "隔热不足或背衬不足引发的风险。"@zh ;
+    rdfs:subClassOf ex:Risk .
+
+ex:SlagType a rdfs:Class ;
+    rdfs:label "渣型"@zh .
+
+ex:SpinelBasedMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "尖晶石体系"@zh ;
+    rdfs:comment "以尖晶石相为核心的耐火材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:SprayRepairProcess a rdfs:Class,
+        owl:Class ;
+    rdfs:label "喷补工艺"@zh ;
+    rdfs:comment "适用于喷补、喷涂和局部修补的工艺族。"@zh ;
+    rdfs:subClassOf ex:InstallationProcess .
+
+ex:StrictDryOutConstraint a rdfs:Class,
+        owl:Class ;
+    rdfs:label "严格烘炉约束"@zh ;
+    rdfs:comment "必须执行分段受控的烘炉曲线。"@zh ;
+    rdfs:subClassOf ex:Constraint .
+
+ex:ThermalDamageMechanism a rdfs:Class,
+        owl:Class ;
+    rdfs:label "热损伤机理"@zh ;
+    rdfs:comment "与温度循环和热冲击相关的失效机理族。"@zh ;
+    rdfs:subClassOf ex:FailureMechanism .
+
+ex:ThermalShockResistantMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "抗热震体系"@zh ;
+    rdfs:comment "对温度循环和热冲击更敏感的工况适配体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:ThermalSpallingRisk a rdfs:Class,
+        owl:Class ;
+    rdfs:label "热震剥落风险"@zh ;
+    rdfs:comment "温度循环导致的剥落风险。"@zh ;
+    rdfs:subClassOf ex:Risk .
+
+ex:WearResistantMaterialSystem a rdfs:Class,
+        owl:Class ;
+    rdfs:label "抗磨损体系"@zh ;
+    rdfs:comment "适用于冲刷和磨损较强工况的材料体系。"@zh ;
+    rdfs:subClassOf ex:MaterialSystem .
+
+ex:WorkCondition a rdfs:Class ;
+    rdfs:label "工况"@zh .
+
+ex:AbrasionErosion a ex:MechanicalDamageMechanism,
+        ex:WearResistantMaterialSystem .
+
+ex:AcidicSlag a ex:SlagType ;
+    rdfs:label "酸性渣"@zh .
+
+ex:AlkaliAttack a ex:ChemicalDamageMechanism .
+
+ex:BackupLining a ex:LiningRole ;
+    rdfs:label "背衬"@zh .
+
+ex:BasicSlag a ex:SlagType ;
+    rdfs:label "碱性渣"@zh .
+
+ex:BatchMode a ex:OperationMode ;
+    rdfs:label "间歇式"@zh .
+
+ex:CORich a ex:Atmosphere ;
+    rdfs:label "CO 富"@zh .
+
+ex:ConstraintFastTurnaround a ex:FastTurnaroundConstraint .
+
+ex:ConstraintLowOxygenExposure a ex:LowOxygenExposureConstraint .
+
+ex:ConstraintMoistureControl a ex:MoistureControlConstraint .
+
+ex:ConstraintStrictDryout a ex:StrictDryOutConstraint .
+
+ex:ContinuousMode a ex:OperationMode ;
+    rdfs:label "连续式"@zh .
+
+ex:HotFace a ex:FurnaceZone ;
+    rdfs:label "热面"@zh .
+
+ex:HydrationCracking a ex:EnvironmentalDamageMechanism,
+        ex:HydrationDamageMechanism .
+
+ex:ImpactZone a ex:FurnaceZone ;
+    rdfs:label "冲击区"@zh .
+
+ex:InsulatingLining a ex:LiningRole ;
+    rdfs:label "隔热层"@zh .
+
+ex:MS_Al2O3Spinel a ex:AluminaBasedMaterialSystem,
+        ex:OxidationResistantMaterialSystem,
+        ex:SpinelBasedMaterialSystem,
+        ex:ThermalShockResistantMaterialSystem .
+
+ex:MS_HighAlumina a ex:AluminaBasedMaterialSystem,
+        ex:ChemicalCorrosionResistantMaterialSystem,
+        ex:HighAluminaMaterialSystem,
+        ex:ThermalShockResistantMaterialSystem .
+
+ex:MS_MgOC a ex:BasicSlagServiceMaterialSystem,
+        ex:CarbonContainingMaterialSystem,
+        ex:MagnesiaBasedMaterialSystem,
+        ex:MetalContactTolerantMaterialSystem,
+        ex:WearResistantMaterialSystem .
+
+ex:MS_MgOSpinel a ex:BasicSlagServiceMaterialSystem,
+        ex:MagnesiaBasedMaterialSystem,
+        ex:MetalContactTolerantMaterialSystem,
+        ex:OxidationResistantMaterialSystem,
+        ex:SpinelBasedMaterialSystem .
+
+ex:MetalPenetration a ex:PenetrationDamageMechanism .
+
+ex:NeutralSlag a ex:SlagType ;
+    rdfs:label "中性渣"@zh .
+
+ex:OxidationBurnout a ex:EnvironmentalDamageMechanism,
+        ex:OxidationDamageMechanism .
+
+ex:Oxidizing a ex:Atmosphere ;
+    rdfs:label "氧化性"@zh .
+
+ex:ProcessBricking a ex:BrickLayingProcess .
+
+ex:ProcessCastable a ex:MonolithicCastingProcess .
+
+ex:ProcessDryoutControlled a ex:ControlledDryOutProcess .
+
+ex:ProcessGunning a ex:SprayRepairProcess .
+
+ex:Reducing a ex:Atmosphere ;
+    rdfs:label "还原性"@zh .
+
+ex:RefractoryOntologyExpanded a owl:Ontology ;
+    rdfs:label "耐火材料扩展本体"@zh ;
+    rdfs:comment "在基础本体之上补充更细的材料体系、失效机理、工艺、风险与约束层级。"@zh .
+
+ex:RiskCarbonOxidation a ex:CarbonOxidationRisk .
+
+ex:RiskChemicalIncompatibility a ex:ChemicalIncompatibilityRisk .
+
+ex:RiskDryoutExplosion a ex:DryOutExplosionRisk .
+
+ex:RiskHydration a ex:HydrationRisk .
+
+ex:RiskShellOverheat a ex:ShellOverheatRisk .
+
+ex:RiskThermalSpalling a ex:ThermalSpallingRisk .
+
+ex:Roof a ex:FurnaceZone ;
+    rdfs:label "炉顶"@zh .
+
+ex:SlagCorrosion a ex:ChemicalDamageMechanism .
+
+ex:SlagLine a ex:FurnaceZone ;
+    rdfs:label "渣线"@zh .
+
+ex:Spec_Al2O3Spinel_Working a ex:CastableProductSpec .
+
+ex:Spec_Generic_Backup a ex:BackupProductSpec .
+
+ex:Spec_Generic_Insulation a ex:InsulatingProductSpec .
+
+ex:Spec_HighAlumina_Working a ex:CastableProductSpec .
+
+ex:Spec_MgOC_Working a ex:BrickProductSpec .
+
+ex:Spec_MgOSpinel_Working a ex:BrickProductSpec .
+
+ex:TapHole a ex:FurnaceZone ;
+    rdfs:label "出钢口/出铁口"@zh .
+
+ex:ThermalShockSpalling a ex:ThermalDamageMechanism .
+
+ex:WorkingLining a ex:LiningRole ;
+    rdfs:label "工作层"@zh .
+
+ex:abrasionLevel a rdf:Property ;
+    rdfs:label "冲刷/磨损等级"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:string .
+
+ex:allowedAtmosphere a rdf:Property ;
+    rdfs:label "允许气氛"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:Atmosphere .
+
+ex:alternativeLayer a rdf:Property ;
+    rdfs:label "替代工作层"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:ProductSpec .
+
+ex:alternativeRank a rdf:Property ;
+    rdfs:label "替代优先级"@zh ;
+    rdfs:domain ex:ProductSpec ;
+    rdfs:range xsd:integer .
+
+ex:atmosphere a rdf:Property ;
+    rdfs:label "气氛"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range ex:Atmosphere .
+
+ex:confidenceScore a rdf:Property ;
+    rdfs:label "推荐置信度"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range xsd:double .
+
+ex:explains a rdf:Property ;
+    rdfs:label "解释依据"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range rdf:Statement .
+
+ex:forCondition a rdf:Property ;
+    rdfs:label "对应工况"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:WorkCondition .
+
+ex:forSlagType a rdf:Property ;
+    rdfs:label "针对渣型"@zh ;
+    rdfs:domain ex:FailureMechanism ;
+    rdfs:range ex:SlagType .
+
+ex:handlesMetalContact a rdf:Property ;
+    rdfs:label "可接触金属液"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range xsd:boolean .
+
+ex:hasComponent a rdf:Property ;
+    rdfs:label "主要组分"@zh ;
+    rdfs:domain ex:MaterialSystem .
+
+ex:hasConstraint a rdf:Property ;
+    rdfs:label "推荐约束条件"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:Constraint .
+
+ex:hasFurnaceType a rdf:Property ;
+    rdfs:label "炉型"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range ex:FurnaceType .
+
+ex:hasLayer a rdf:Property ;
+    rdfs:label "推荐材料层"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:ProductSpec .
+
+ex:hasRisk a rdf:Property ;
+    rdfs:label "风险点"@zh ;
+    rdfs:domain ex:ProductSpec ;
+    rdfs:range ex:Risk .
+
+ex:hasZone a rdf:Property ;
+    rdfs:label "关键部位"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range ex:FurnaceZone .
+
+ex:highlightsRisk a rdf:Property ;
+    rdfs:label "重点风险提示"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:Risk .
+
+ex:implementedAs a rdf:Property ;
+    rdfs:label "落地为牌号/配方"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:ProductSpec .
+
+ex:keyThreshold a rdf:Property ;
+    rdfs:label "关键阈值"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range xsd:string .
+
+ex:layerRole a rdf:Property ;
+    rdfs:label "层位"@zh ;
+    rdfs:domain ex:ProductSpec ;
+    rdfs:range ex:LiningRole .
+
+ex:maxAllowShellTemp a rdf:Property ;
+    rdfs:label "壳体允许最高温度(℃)"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:double .
+
+ex:maxSlagBasicity a rdf:Property ;
+    rdfs:label "适用最大渣碱度"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range xsd:double .
+
+ex:maxTmax a rdf:Property ;
+    rdfs:label "适用最高最高温度(℃)"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range xsd:double .
+
+ex:metalContact a rdf:Property ;
+    rdfs:label "是否接触金属液"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:boolean .
+
+ex:minSlagBasicity a rdf:Property ;
+    rdfs:label "适用最小渣碱度"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range xsd:double .
+
+ex:minTmax a rdf:Property ;
+    rdfs:label "适用最低最高温度(℃)"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range xsd:double .
+
+ex:mitigatesMechanism a rdf:Property,
+        owl:ObjectProperty ;
+    rdfs:label "缓解失效机理"@zh ;
+    rdfs:comment "MaterialSystem 到 FailureMechanism 的显式逆关系，便于做反向查询。"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:FailureMechanism ;
+    owl:inverseOf ex:mitigatedBy .
+
+ex:notRecommendedForSlagType a rdf:Property ;
+    rdfs:label "不建议渣型"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:SlagType .
+
+ex:notRecommendedInAtmosphere a rdf:Property ;
+    rdfs:label "不建议气氛"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:Atmosphere .
+
+ex:operationMode a rdf:Property ;
+    rdfs:label "运行模式"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range ex:OperationMode .
+
+ex:preferredForFurnace a rdf:Property ;
+    rdfs:label "优选炉型"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:FurnaceType .
+
+ex:preferredForZone a rdf:Property ;
+    rdfs:label "优选部位"@zh ;
+    rdfs:domain ex:MaterialSystem ;
+    rdfs:range ex:FurnaceZone .
+
+ex:primaryLayer a rdf:Property ;
+    rdfs:label "主推荐工作层"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:ProductSpec .
+
+ex:recommendedProcess a rdf:Property ;
+    rdfs:label "建议施工工艺"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:InstallationProcess .
+
+ex:recommendedSystem a rdf:Property ;
+    rdfs:label "推荐材质体系"@zh ;
+    rdfs:domain ex:Recommendation ;
+    rdfs:range ex:MaterialSystem .
+
+ex:requiresConstraint a rdf:Property ;
+    rdfs:label "需要满足约束"@zh ;
+    rdfs:domain ex:ProductSpec ;
+    rdfs:range ex:Constraint .
+
+ex:requiresProcess a rdf:Property ;
+    rdfs:label "需要施工工艺"@zh ;
+    rdfs:domain ex:ProductSpec ;
+    rdfs:range ex:InstallationProcess .
+
+ex:slagBasicity a rdf:Property ;
+    rdfs:label "渣碱度(CaO/SiO2)"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:double .
+
+ex:slagType a rdf:Property ;
+    rdfs:label "渣型"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range ex:SlagType .
+
+ex:targetCampaignHeats a rdf:Property ;
+    rdfs:label "目标炉龄(炉次)"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:double .
+
+ex:thermalShockCyclesPerDay a rdf:Property ;
+    rdfs:label "热震频率(次/天)"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:double .
+
+ex:tmax a rdf:Property ;
+    rdfs:label "最高温度(℃)"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range xsd:double .
+
+ex:triggersFailure a rdf:Property ;
+    rdfs:label "触发失效机理"@zh ;
+    rdfs:domain ex:WorkCondition ;
+    rdfs:range ex:FailureMechanism .
+
+ex:mitigatedBy a rdf:Property ;
+    rdfs:label "可由材质体系缓解"@zh ;
+    rdfs:domain ex:FailureMechanism ;
+    rdfs:range ex:MaterialSystem .
+

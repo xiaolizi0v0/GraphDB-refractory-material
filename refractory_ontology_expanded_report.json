@@ -1,0 +1,289 @@
+{
+  "base_ontology": "refractory_ontology.ttl",
+  "kb_ttl": "refractory_kb.ttl",
+  "source_label_count": 192,
+  "source_label_sample": [
+    "Al2O3: 60–90%；适用于中低碱度、氧化气氛工况(示例)",
+    "Al2O3: ≥85%；尖晶石: 5–20%；微粉+结合剂体系按工况选(示例)",
+    "CO 富",
+    "MaterialSystem 到 FailureMechanism 的显式逆关系，便于做反向查询。",
+    "MgO: 85–95%；尖晶石: 5–15%(示例)",
+    "MgO: 92–96%；C: 10–18%；抗氧化剂: 1–3%(示例)",
+    "不建议气氛",
+    "不建议渣型",
+    "与含碳相氧化烧损相关的失效机理。",
+    "与材料受潮和水化膨胀相关的失效机理。",
+    "与氧化、水化和介质环境相关的失效机理族。",
+    "与温度循环和热冲击相关的失效机理族。",
+    "与磨损、冲刷和颗粒冲击相关的失效机理族。",
+    "与金属液或低粘度介质渗入相关的失效机理。",
+    "严格烘炉约束",
+    "中性渣",
+    "主推荐工作层",
+    "主要组分",
+    "仓储、施工和周转阶段需要严格防潮。",
+    "仓储与施工阶段需严格防潮",
+    "以化学反应、渣蚀和侵蚀为主的失效机理族。",
+    "以喷补/喷涂为主的产品规格族。",
+    "以尖晶石相为核心的耐火材料体系。",
+    "以氧化铝为主的耐火材料体系。",
+    "以浇注料为主的产品规格族。",
+    "以砖材为主的产品规格族。",
+    "以镁质为主的耐火材料体系。",
+    "优选炉型",
+    "优选部位",
+    "低氧暴露约束",
+    "允许气氛",
+    "关键部位",
+    "关键阈值",
+    "冲击区",
+    "冲刷/磨损",
+    "冲刷/磨损等级",
+    "出钢口/出铁口",
+    "刚玉-尖晶石(Al2O3-Spinel)",
+    "加热炉",
+    "化学不相容风险",
+    "化学损伤机理",
+    "受控烘炉工艺",
+    "受控烘炉曲线(分段升温/保温)",
+    "受潮后发生水化和结构破坏的风险。",
+    "可承受金属液或熔融介质接触的体系。",
+    "可接触金属液",
+    "可由材质体系缓解",
+    "含碳材料在氧化气氛下的风险。",
+    "含碳材质体系",
+    "含碳相氧化风险",
+    "含碳相氧化风险(需抗氧化/密封/控氧)",
+    "含碳耐火材料体系的细分本体。",
+    "喷补/喷涂",
+    "喷补产品规格",
+    "喷补工艺",
+    "回转窑",
+    "在基础本体之上补充更细的材料体系、失效机理、工艺、风险与约束层级。",
+    "在氧化气氛下仍保持稳定的材料体系。",
+    "壳体允许最高温度(℃)",
+    "壳体过热风险",
+    "壳体过热风险(需关注背衬与隔热层)",
+    "失效机理",
+    "对储存、施工和烘炉阶段受潮更宽容的体系。",
+    "对应工况",
+    "对渣蚀和化学侵蚀更耐受的材料体系。",
+    "对温度循环和热冲击更敏感的工况适配体系。",
+    "尖晶石体系",
+    "层位",
+    "工作层",
+    "工作层：刚玉-尖晶石浇注料/砖(示例范围)",
+    "工作层：镁碳砖/料(示例范围)",
+    "工作层：镁质-尖晶石砖/料(示例范围)",
+    "工作层：高铝砖/高铝浇注料(示例范围)",
+    "工况",
+    "工程约束",
+    "干燥和烘炉不当导致的爆裂风险。",
+    "建议施工工艺",
+    "强调分段升温和保温的烘炉工艺。",
+    "必须执行分段受控烘炉曲线",
+    "必须执行分段受控的烘炉曲线。"
+  ],
+  "added_class_count": 38,
+  "added_property_count": 1,
+  "typed_individual_count": 31,
+  "typed_individual_sample": [
+    {
+      "subject": "http://example.com/refractory#MS_MgOC",
+      "classes": [
+        "含碳材质体系",
+        "镁质体系",
+        "碱性渣适用体系",
+        "抗磨损体系",
+        "耐金属液接触体系"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#MS_MgOSpinel",
+      "classes": [
+        "镁质体系",
+        "尖晶石体系",
+        "抗氧化体系",
+        "碱性渣适用体系",
+        "耐金属液接触体系"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#MS_Al2O3Spinel",
+      "classes": [
+        "铝质体系",
+        "尖晶石体系",
+        "抗热震体系",
+        "抗氧化体系"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#MS_HighAlumina",
+      "classes": [
+        "铝质体系",
+        "高铝体系",
+        "抗化学侵蚀体系",
+        "抗热震体系"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#SlagCorrosion",
+      "classes": [
+        "化学损伤机理"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#AlkaliAttack",
+      "classes": [
+        "化学损伤机理"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ThermalShockSpalling",
+      "classes": [
+        "热损伤机理"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#AbrasionErosion",
+      "classes": [
+        "机械损伤机理",
+        "抗磨损体系"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#OxidationBurnout",
+      "classes": [
+        "环境损伤机理",
+        "氧化损伤机理"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#MetalPenetration",
+      "classes": [
+        "渗透损伤机理"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#HydrationCracking",
+      "classes": [
+        "环境损伤机理",
+        "水化损伤机理"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ProcessBricking",
+      "classes": [
+        "砌筑工艺"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ProcessCastable",
+      "classes": [
+        "整体浇注工艺"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ProcessGunning",
+      "classes": [
+        "喷补工艺"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ProcessDryoutControlled",
+      "classes": [
+        "受控烘炉工艺"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#RiskCarbonOxidation",
+      "classes": [
+        "含碳相氧化风险"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#RiskHydration",
+      "classes": [
+        "水化风险"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#RiskDryoutExplosion",
+      "classes": [
+        "烘炉爆裂风险"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#RiskThermalSpalling",
+      "classes": [
+        "热震剥落风险"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#RiskChemicalIncompatibility",
+      "classes": [
+        "化学不相容风险"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#RiskShellOverheat",
+      "classes": [
+        "壳体过热风险"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ConstraintLowOxygenExposure",
+      "classes": [
+        "低氧暴露约束"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ConstraintMoistureControl",
+      "classes": [
+        "防潮约束"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ConstraintStrictDryout",
+      "classes": [
+        "严格烘炉约束"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#ConstraintFastTurnaround",
+      "classes": [
+        "快速检修约束"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#Spec_MgOC_Working",
+      "classes": [
+        "砖类产品规格"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#Spec_MgOSpinel_Working",
+      "classes": [
+        "砖类产品规格"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#Spec_Al2O3Spinel_Working",
+      "classes": [
+        "浇注料产品规格"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#Spec_HighAlumina_Working",
+      "classes": [
+        "浇注料产品规格"
+      ]
+    },
+    {
+      "subject": "http://example.com/refractory#Spec_Generic_Insulation",
+      "classes": [
+        "隔热层产品规格"
+      ]
+    }
+  ]
+}
